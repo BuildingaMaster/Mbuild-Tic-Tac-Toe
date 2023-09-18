@@ -1,6 +1,22 @@
 #pragma once
 class TacBoard
 {
-	void printBoard();
+public:
+	// Stored moves
+	char x = 'X';
+	char o = 'O';
+
+	// Pointers to the X and O characters
+	char* setX = &x;
+	char* setO = &o;
+
+	// Stores pointer for which turn it currently is
+	char Turn;
+
+	void addSpace(char Row, int Column);
+	char checkSpace(char Row, int Column);
+	void nextTurn();
+private:
+	char BoardLayout[3][3];
 };
 
