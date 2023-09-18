@@ -1,11 +1,13 @@
 // Mbuild Tic Tac Toe.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+
 
 #include <iostream>
 
+using namespace std;
+
 int main()
 {
-    std::cout << "Hello World BOI!";
+    cout << "Hello World BOI!";
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
