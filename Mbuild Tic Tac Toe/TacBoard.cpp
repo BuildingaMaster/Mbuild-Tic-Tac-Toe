@@ -10,6 +10,8 @@ TacBoard::TacBoard()
 
 void TacBoard::printBoard()
 {
+    // If this is the first time the board is printed:
+    // Save where it is to overwrite it later.
     if (hasPrintedBefore == false)
     {
         term.saveCursorPos();
@@ -17,11 +19,11 @@ void TacBoard::printBoard()
     }
     term.restoreCursorPos();
     checkPlayerWin();
-    for (char i = '1'; i < '4'; i++)
+    for (char i = '1'; i <= '3'; i++) // Traverse by rows
     {
-
         for (int tileCount = 0; tileCount < 5; tileCount++)
         {
+            // If the player won in this square, color it green.
             if (BoardGUI.win_board['A'][i] == PLAYER_WIN)
             {
                 term.consoleColors.setBGTextColor(118);
@@ -44,7 +46,7 @@ void TacBoard::printBoard()
             term.consoleColors.setBGTextColor(TerminalDisplay::consoleColors::BG_DEFAULT);
             cout << endl;
         }
-        if (i <= '2')
+        if (i <= '2') // We only need to print this twice
         {
             cout <<"-----------+-----------+-----------" << endl;
         }
@@ -52,9 +54,11 @@ void TacBoard::printBoard()
     cout << endl;
 }
 
+/// @brief  Determines who won the game.
+/// @return PLAYER_BLANK for nobody, PLAYER_X, or PLAYER_Y
 TacBoard::playerID TacBoard::checkPlayerWin()
 {
-    for (char i = 'A'; i < 'D'; i++)
+    for (char i = 'A'; i <= 'C'; i++)
     {
         if ((BoardGUI.board_status[i]['1'] == BoardGUI.board_status[i]['2'] == BoardGUI.board_status[i]['3']) && BoardGUI.board_status[i]['2'] != PLAYER_BLANK )
         {
@@ -62,7 +66,7 @@ TacBoard::playerID TacBoard::checkPlayerWin()
             return BoardGUI.board_status[i]['1'];
         }
     }
-    for (char i = '1'; i < '4'; i++)
+    for (char i = '1'; i <= '3'; i++)
     {
         if ((BoardGUI.board_status['A'][i] == BoardGUI.board_status['B'][i] == BoardGUI.board_status['C'][i]) && BoardGUI.board_status['B'][i] != PLAYER_BLANK)
         {
@@ -83,10 +87,11 @@ TacBoard::playerID TacBoard::checkPlayerWin()
     }
     return PLAYER_BLANK;
 }
-
+/// @brief Get the win type. (Unused currently)
+/// @return  The win type, like if a player won by a row.s
 TacBoard::winType TacBoard::getWinType()
 {
-    for (char i = 'A'; i < 'D'; i++) //Col
+    for (char i = 'A'; i <= 'C'; i++) //Col
     {
         if ((BoardGUI.board_status[i]['1'] == BoardGUI.board_status[i]['2'] == BoardGUI.board_status[i]['3']) && BoardGUI.board_status[i]['2'] != PLAYER_BLANK )
         {
@@ -101,7 +106,7 @@ TacBoard::winType TacBoard::getWinType()
             };
         }
     }
-    for (char i = '1'; i < '4'; i++) //Row
+    for (char i = '1'; i <= '3'; i++) //Row
     {
         if ((BoardGUI.board_status['A'][i] == BoardGUI.board_status['B'][i] == BoardGUI.board_status['C'][i]) && BoardGUI.board_status['B'][i] != PLAYER_BLANK)
         {
@@ -156,4 +161,15 @@ bool TacBoard::addSpace(char Row, char Column)
         return true;
 	}
     return false; 
+}
+
+void TacBoard::boardReset()
+{
+    for (char col = 'A'; col <= 'C'; col++)
+    {
+        for (char row = '1'; row <= '3'; row++)
+        {
+            BoardGUI.board_status[col][row] = BoardGUI.win_board[col][row] = PLAYER_BLANK;
+        }
+    }
 }

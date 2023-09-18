@@ -1,16 +1,19 @@
 #include "TerminalDisplay.h"
 
 using namespace std;
-
+/// @brief Saves the current cursor position in the terminal.
 void TerminalDisplay::saveCursorPos()
 {
     cout << returnTerminalCode(ESC) << "7";
 }
+/// @brief Restores the saved cursor's position in the terminal.
 void TerminalDisplay::restoreCursorPos()
 {
     cout << returnTerminalCode(ESC) << "8";
 }
-
+/// @brief Returns the escape character as a character
+/// @param code The escape code as standardized by ANSI
+/// @return ANSI escape character
 char TerminalDisplay::returnTerminalCode(TerminalDisplay::terminalCodes code)
 {
     switch (code)
@@ -35,97 +38,128 @@ char TerminalDisplay::returnTerminalCode(TerminalDisplay::terminalCodes code)
             return '\177';
     }
 }
-
+/// @brief Add bold text formatting . Must use with a string.
+/// @return Bold formatting in ANSI
 std::string TerminalDisplay::consoleFonts::beginBold()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[1m");
     return str;
 }
+/// @brief  Remove bold formatting. Must use with a string.
+/// @return Non-Bold formatting in ANSI
 std::string TerminalDisplay::consoleFonts::endBold()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[22m");
     return str;
 }
+/// @brief Add dim text formatting . Must use with a string.
+/// @return Dim formatting in ANSI
 std::string TerminalDisplay::consoleFonts::beginDim()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[2m");
     return str;
 }
+/// @brief  Remove dim formatting. Must use with a string.
+/// @return Non-dim formatting in ANSI
 std::string TerminalDisplay::consoleFonts::endDim()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[22m");
     return str;
 }
+/// @brief Add italic text formatting . Must use with a string.
+/// @return italic formatting in ANSI
 std::string TerminalDisplay::consoleFonts::beginItalic()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[3m");
     return str;
 }
+/// @brief  Remove italic formatting. Must use with a string.
+/// @return Non-italic formatting in ANSI
 std::string TerminalDisplay::consoleFonts::endItalic()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[23m");
     return str;
 }
+/// @brief Add underline text formatting . Must use with a string.
+/// @return Underline formatting in ANSI
 std::string TerminalDisplay::consoleFonts::beginUnderline()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[4m");
     return str;
 }
+/// @brief  Remove underline formatting. Must use with a string.
+/// @return Non-underline formatting in ANSI
 std::string TerminalDisplay::consoleFonts::endUnderline()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[24m");
     return str;
 }
+/// @brief Add blink text formatting. Must use with a string.
+/// @return Blink formatting in ANSI
 std::string TerminalDisplay::consoleFonts::beginBlink()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[5m");
     return str;
 }
+/// @brief  Remove blink formatting. Must use with a string.
+/// @return Non-blink formatting in ANSI
 std::string TerminalDisplay::consoleFonts::endBlink()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[25m");
     return str;
 }
+/// @brief Add reverse text formatting. Must use with a string.
+/// @return Reverse formatting in ANSI
 std::string TerminalDisplay::consoleFonts::beginReverse()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[6m");
     return str;
 }
+/// @brief  Remove reverse formatting. Must use with a string.
+/// @return Non-reverse formatting in ANSI
 std::string TerminalDisplay::consoleFonts::endReverse()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[26m");
     return str;
 }
+/// @brief Add hidden text formatting . Must use with a string.
+/// @return Hidden formatting in ANSI
 std::string TerminalDisplay::consoleFonts::beginHiddenText()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[7m");
     return str;
 }
+/// @brief  Remove hidden text formatting. Must use with a string.
+/// @return Non-hidden text formatting in ANSI
 std::string TerminalDisplay::consoleFonts::endHiddenText()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[27m");
     return str;
 }
+/// @brief Add strikethrough text formatting . Must use with a string.
+/// @return strikethrough formatting in ANSI
 std::string TerminalDisplay::consoleFonts::beginStrikeThrough()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[8m");
     return str;
 }
+/// @brief  Remove strikethrough formatting. Must use with a string.
+/// @return Non-Bold strikethrough in ANSI
 std::string TerminalDisplay::consoleFonts::endStrikeThrough()
 {
     std::string str(1,returnTerminalCode(ESC));
