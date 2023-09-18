@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "TacBoard.h"
+
 using namespace std;
 
 int main()
