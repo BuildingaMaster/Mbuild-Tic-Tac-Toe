@@ -129,9 +129,11 @@
   <ItemGroup>
     <ClCompile Include="Mbuild Tic Tac Toe.cpp" />
     <ClCompile Include="TacBoard.cpp" />
+    <ClCompile Include="TerminalDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TacBoard.h" />
+    <ClInclude Include="TerminalDisplay.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
