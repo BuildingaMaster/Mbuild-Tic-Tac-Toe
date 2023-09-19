@@ -24,7 +24,8 @@ void printInstructions()
 
 int main()
 {
-	printInstructions();
+	TacBoard TicTacToe;
+	// printInstructions();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

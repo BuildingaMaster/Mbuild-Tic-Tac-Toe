@@ -1,4 +1,6 @@
 #include "TacBoard.h"
+#include <iostream>
+using namespace std;
 
 int rowConvert(char toInt)
 {
@@ -41,6 +43,16 @@ int rowConvert(char toInt)
 	}
 }
 // Converts chars 'a' 'b' 'c' into readable integers for the BoardLayout array
+
+TacBoard::TacBoard()
+{
+	Turn = 'X';
+	BoardLayout[3][3];
+
+	BoardLayout[0][0] = 'X';
+	BoardLayout[1][1] = 'X';
+	BoardLayout[2][2] = 'X';
+}
 
 char TacBoard::checkSpace(char Row, int Column)
 {
@@ -93,3 +105,15 @@ void TacBoard::addSpace(char Row, int Column)
 }
 // Adds an 'x' or an 'o' to the desired space in the array ( row x column )
 // Halts if there is a char already in that space
+
+void TacBoard::tempPrintBoard()
+{
+	for (int j = 0; j < 3; j++)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			cout << BoardLayout[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
