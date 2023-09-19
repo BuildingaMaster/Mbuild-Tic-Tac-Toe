@@ -36,13 +36,13 @@ int rowConvert(char toInt)
 char TacBoard::checkSpace(char Row, int Column)
 {
 	int intRow = rowConvert(Row);
-	if (BoardLayout[intRow, Column] != '\0')
+	if (BoardLayout[intRow][Column-1] != '\0')
 	{
-		if (BoardLayout[intRow, Column] == setX)
+		if (BoardLayout[intRow][Column-1] == x)
 		{
 			return 'X';
 		}
-		if (BoardLayout[intRow, Column] == setO)
+		if (BoardLayout[intRow][Column-1] == o)
 		{
 			return 'O';
 		}
@@ -74,7 +74,7 @@ void TacBoard::addSpace(char Row, int Column)
 	if (checkSpace(Row, Column) != '\0')
 	{
 		int intRow = rowConvert(Row);
-		BoardLayout[intRow][Column] = Turn;
+		BoardLayout[intRow][Column-1] = Turn;
 		nextTurn();
 	}
 	else
