@@ -18,5 +18,13 @@
     <ClCompile Include="Mbuild Tic Tac Toe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TacBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TacBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
