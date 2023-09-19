@@ -5,30 +5,39 @@ int rowConvert(char toInt)
 	switch (toInt)
 	{
 	case 'a':
+	{
 		return 0;
 		break;
-
+	}
 	case 'A':
+	{
 		return 0;
 		break;
-
+	}
 	case 'b':
+	{
 		return 1;
 		break;
-
+	}
 	case 'B':
+	{
 		return 1;
 		break;
-
+	}
 	case 'c':
+	{
 		return 2;
 		break;
-
+	}
 	case 'C':
+	{
 		return 2;
 		break;
-
+	}
 	default:
+	{
+		// Nothing will happen here
+	}
 	}
 }
 // Converts chars 'a' 'b' 'c' into readable integers for the BoardLayout array
@@ -59,11 +68,11 @@ void TacBoard::nextTurn()
 {
 	if (Turn == 'X')
 	{
-		Turn == 'O';
+		Turn = 'O';
 	}
 	else
 	{
-		Turn == 'X';
+		Turn = 'X';
 	}
 	return;
 }
