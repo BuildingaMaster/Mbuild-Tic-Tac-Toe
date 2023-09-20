@@ -85,6 +85,7 @@ int main()
         term.clearScreen(TerminalDisplay::ERASE_ENTIRE_LINE, true);
         cout << "Real Player won: " << TicTacToe.checkPlayerWin() << endl;
 
+        TicTacToe.trackWinner();
 
         TicTacToe.restartGame();
     }

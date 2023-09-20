@@ -296,3 +296,18 @@ void TacBoard::quitProgram()
     exit(0);
 
 }
+
+// trackWinner
+void TacBoard::trackWinner()
+{
+    if (winner == PLAYER_X)
+    {
+        player_x_wins+= 1;
+        cout << "Player X has " << player_o_wins << " wins" << endl;
+    }
+    else if (winner == PLAYER_O)
+    {
+        player_o_wins+= 1;
+        cout << "Player O has " << player_x_wins << " wins" << endl;
+    }
+}

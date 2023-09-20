@@ -34,6 +34,8 @@ public:
 	};
 private:
 	playerID winner;
+	int player_x_wins = 0;
+	int player_o_wins = 0;
 public:
 	void firstMove();
 	void printBoard();
@@ -47,6 +49,8 @@ public:
 	void restartGame();
 
 	void quitProgram();
+
+	void trackWinner();
 
 	bool addSpace(std::string, bool &);
 	playerID checkSpace(char, char);
