@@ -292,7 +292,7 @@ void TacBoard::restartGame()
 
 void TacBoard::quitProgram()
 {
-    cout << " Exiting the program. " << endl;
+    cout << "Exiting the program. " << endl;
     exit(0);
 
 }
