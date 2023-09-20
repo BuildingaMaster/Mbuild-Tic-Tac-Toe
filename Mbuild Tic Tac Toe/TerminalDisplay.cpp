@@ -4,12 +4,80 @@ using namespace std;
 /// @brief Saves the current cursor position in the terminal.
 void TerminalDisplay::saveCursorPos()
 {
-    cout << returnTerminalCode(ESC) << "7";
+    cout << returnTerminalCode(ESC) << "7" << std::flush;
 }
 /// @brief Restores the saved cursor's position in the terminal.
 void TerminalDisplay::restoreCursorPos()
 {
-    cout << returnTerminalCode(ESC) << "8";
+    cout << returnTerminalCode(ESC) << "8" << std::flush;
+}
+
+void TerminalDisplay::consoleCursorControls::moveToOrigin()
+{
+    cout << returnTerminalCode(ESC) << "[H" << std::flush;
+}
+void TerminalDisplay::consoleCursorControls::moveToPosition(int line, int column)
+{
+    if (line < 0 || column < 0)
+    {
+        throw std::invalid_argument("moveToPosition must have positive number.");
+    }
+    cout << returnTerminalCode(ESC) << "["<<line<<";"<<column<<"H" << std::flush;
+}
+void TerminalDisplay::consoleCursorControls::moveToLine(int amount, bool moveToBeginning = true)
+{
+    if (moveToBeginning == true)
+    {
+        if (amount>=0)
+        {
+            cout << returnTerminalCode(ESC) << "["<< to_string(amount) <<"F" << std::flush;
+            return;
+        }
+        cout << returnTerminalCode(ESC) << "["<< to_string(abs(amount)) <<"E" << std::flush;
+        return;
+    }
+    if (amount>=0)
+    {
+        cout << returnTerminalCode(ESC) << "["<< to_string(amount) <<"A" << std::flush;
+        return;
+    }
+    cout << returnTerminalCode(ESC) << "["<< to_string(abs(amount)) <<"B" << std::flush;
+    
+}
+void TerminalDisplay::consoleCursorControls::moveToColumn(int amount, bool isAbsolutePosition)
+{
+    if (isAbsolutePosition == true)
+    {
+        cout << returnTerminalCode(ESC) << "["<< to_string(abs(amount)) <<"D" << std::flush;
+    }
+    if (amount>=0)
+    {
+        cout << returnTerminalCode(ESC) << "["<< to_string(amount) <<"C" << std::flush;
+        return;
+    }
+    cout << returnTerminalCode(ESC) << "["<< to_string(abs(amount)) <<"D" << std::flush;
+    
+}
+
+void TerminalDisplay::moveToNextLine()
+{
+    consoleCursorControls.moveToLine(-1);
+}
+
+void TerminalDisplay::moveToPreviousLine()
+{
+    consoleCursorControls.moveToLine(1);
+}
+
+void TerminalDisplay::consoleCursorControls::moveCursorNColumns(int amount)
+{
+    if (amount>=0)
+    {
+        cout << returnTerminalCode(ESC) << "[" << to_string(amount)<< "C" << std::flush;
+        return;
+    }
+    cout << returnTerminalCode(ESC) << "[" << to_string(abs(amount))<< "D" << std::flush;
+    
 }
 /// @brief Returns the escape character as a character
 /// @param code The escape code as standardized by ANSI
@@ -304,6 +372,36 @@ void TerminalDisplay::resetAllStyles()
     cout << str;
 }
 
+std::string TerminalDisplay::returnScreenEraseMode(TerminalDisplay::screenEraseModes mode)
+{
+    switch (mode)
+    {
+        case ERASE_CURSOR_TO_SCREEN_END:
+            return "[0J";
+        case ERASE_CURSOR_TO_SCREEN_START:
+            return "[1J";
+        case ERASE_ENTIRE_SCREEN:
+            return "[2J";
+        case ERASE_SAVED_LINES:
+            return "[3J";
+        case ERASE_CURSOR_TO_LINE_END:
+            return "[0K";
+        case ERASE_LINE_START_TO_CURSOR:
+            return "[1K";
+        case ERASE_ENTIRE_LINE:
+            return "[2K";
+    }
+}
+void TerminalDisplay::clearScreen(TerminalDisplay::screenEraseModes mode, bool moveCursor)
+{
+    std::string str(1,returnTerminalCode(ESC));
+    str.append(returnScreenEraseMode(mode));
+    if (moveCursor)
+    {
+        str.append("\r");
+    }
+    cout << str;
+}
 
 TerminalDisplay::~TerminalDisplay()
 {

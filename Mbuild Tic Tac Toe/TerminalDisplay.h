@@ -19,12 +19,37 @@ private:
         DEL = 127
     };
     static char returnTerminalCode(terminalCodes);
-
+public:
+    enum screenEraseModes
+    {
+        ERASE_CURSOR_TO_SCREEN_END,
+        ERASE_CURSOR_TO_SCREEN_START,
+        ERASE_ENTIRE_SCREEN,
+        ERASE_SAVED_LINES,
+        ERASE_CURSOR_TO_LINE_END,
+        ERASE_LINE_START_TO_CURSOR,
+        ERASE_ENTIRE_LINE
+    };
+private:
+    static std::string returnScreenEraseMode(screenEraseModes);
 public:
     ~TerminalDisplay();
     void saveCursorPos();
     void restoreCursorPos();
+    void moveToPreviousLine();
+    void moveToNextLine();
+    void clearScreen(screenEraseModes,bool);
     void resetAllStyles();
+    class consoleCursorControls
+    {
+        public:
+            void moveToOrigin();
+            void moveToPosition(int, int);
+            void moveToLine(int, bool);
+            void moveToColumn(int, bool);
+            void moveCursorNColumns(int);
+
+    } consoleCursorControls;
     class consoleFonts
     {
     public:
