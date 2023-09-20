@@ -23,7 +23,7 @@ void printInstructions()
 	cout << "If a player enters an invalid spot / a spot already taken on the board, that player will be asked to re-enter their move to an available spot on the board" << endl;
 	cout << "The objective of the game is to get 3 'X's or 3 'O's in a row either horizontally, vertically, or diagonally" << endl;
 	cout << "If the board is filled and there is no sequence of 3 'X's or 3 'O's in arow as stated above, the game ends in a tie" << endl;
-    cout << " Enter 'q' to quit at any time. " << endl << endl;
+    cout << "Enter 'q' to quit at any time. " << endl << endl;
     cout << "Press Enter to continue" << endl;
 }
 
