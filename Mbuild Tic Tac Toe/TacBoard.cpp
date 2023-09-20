@@ -271,3 +271,21 @@ void TacBoard::boardReset()
     turnCount = 0;
     firstMove();
 }
+
+//Game restarts
+void TacBoard::restartGame() 
+{
+    char choice;
+    cout << "Do you want to play another game? (Y/N)";
+    cin >> choice;
+    if (choice == 'y' || choice == 'Y')
+    {
+        boardReset();
+    }
+    else
+    {
+        exit(0);
+    }
+    cout << "The game has been restarted." << endl;
+}
+

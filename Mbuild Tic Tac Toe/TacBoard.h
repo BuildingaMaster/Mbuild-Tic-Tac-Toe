@@ -44,6 +44,8 @@ public:
 
 	void boardReset();
 
+	void restartGame();
+
 	bool addSpace(std::string, bool &);
 	playerID checkSpace(char, char);
 
