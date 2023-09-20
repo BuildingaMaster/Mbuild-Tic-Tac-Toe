@@ -32,6 +32,7 @@ int main()
     
     srand(time(NULL)); // creating to make a "real" random first move
     TerminalDisplay term;
+    TacBoard TicTacToe;
     term.saveCursorPos();
 
     bool playAgain = true;
@@ -48,7 +49,6 @@ int main()
         cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
         term.clearScreen(TerminalDisplay::ERASE_CURSOR_TO_SCREEN_START, true);
         term.restoreCursorPos();
-        TacBoard TicTacToe;
         printInstructions();
         cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
         term.clearScreen(TerminalDisplay::ERASE_CURSOR_TO_SCREEN_START, true);
