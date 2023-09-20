@@ -289,3 +289,10 @@ void TacBoard::restartGame()
     cout << "The game has been restarted." << endl;
 }
 
+
+void TacBoard::quitProgram()
+{
+    cout << " Exiting the program. " << endl;
+    exit(0);
+
+}
