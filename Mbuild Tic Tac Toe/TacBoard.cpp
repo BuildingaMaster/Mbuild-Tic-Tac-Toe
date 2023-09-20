@@ -284,7 +284,7 @@ void TacBoard::restartGame()
     }
     else
     {
-        exit(0);
+        quitProgram();
     }
     cout << "The game has been restarted." << endl;
 }
