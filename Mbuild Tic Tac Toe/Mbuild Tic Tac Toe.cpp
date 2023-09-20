@@ -7,6 +7,19 @@
 
 using namespace std;
 
+char firstMove()
+{
+	int randNum = rand() % 2;
+	
+	if (randNum == 1)
+	{
+		return 'X';
+	}
+	else
+	{
+		return 'O';
+	}
+}
 void printInstructions()
 {
 	cout << "Welcome to Tic Tac Toe " << endl << endl;
@@ -24,6 +37,8 @@ void printInstructions()
 
 int main()
 {
+	srand(time(NULL)); // creating to make a "real" random first move
+
 	TacBoard TicTacToe;
 	// printInstructions();
 }
