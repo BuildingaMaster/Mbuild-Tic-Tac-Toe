@@ -10,6 +10,7 @@ class TacBoard
 private:
 	TerminalDisplay term;
 	bool hasPrintedBefore;
+	int turnCount;
 public:
 	enum playerID
 	{
@@ -34,6 +35,7 @@ public:
 private:
 	playerID winner;
 public:
+	void firstMove();
 	void printBoard();
 	playerID whichPlayerWon();
 	winType getWinType();

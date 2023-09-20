@@ -10,19 +10,6 @@
 
 using namespace std;
 
-char firstMove()
-{
-	int randNum = rand() % 2;
-	
-	if (randNum == 1)
-	{
-		return 'X';
-	}
-	else
-	{
-		return 'O';
-	}
-}
 void printInstructions()
 {
 	cout << "Welcome to Tic Tac Toe " << endl << endl;
@@ -52,7 +39,7 @@ int main()
     cout << "              " << term.consoleFonts.beginBlink() << term.consoleFonts.beginBold() << "Master Builders Software" << term.consoleFonts.endBold() << term.consoleFonts.endBlink() << endl;
     
     cout << "Press Enter to continue" << endl;
-    cin.ignore();cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
     term.clearScreen(TerminalDisplay::ERASE_CURSOR_TO_SCREEN_START,true);
     term.restoreCursorPos();
     TacBoard TicTacToe;

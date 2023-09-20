@@ -7,8 +7,22 @@ TacBoard::TacBoard()
 {
     hasPrintedBefore = false;
     winner = PLAYER_BLANK;
+    turnCount = 0;
+    firstMove();
 }
-
+void TacBoard::firstMove()
+{
+	int randNum = rand() % 2;
+	
+	if (randNum == 1)
+	{
+		Turn = PLAYER_X;
+	}
+	else
+	{
+		Turn = PLAYER_O;
+	}
+}
 void TacBoard::printBoard()
 {
     // If this is the first time the board is printed:
@@ -136,6 +150,10 @@ TacBoard::playerID TacBoard::checkPlayerWin()
         BoardGUI.win_board['C']['1'] = BoardGUI.win_board['B']['2'] = BoardGUI.win_board['A']['3'] = PLAYER_WIN;
         winner = BoardGUI.win_board['B']['2'];
     }
+    if (turnCount >= 9 && winner == PLAYER_BLANK)
+    {
+        winner = PLAYER_INVALID;
+    }
     return winner;
 }
 /// @brief Get the win type. (Unused currently)
@@ -197,6 +215,7 @@ TacBoard::playerID TacBoard::checkSpace(char Column, char Row)
 
 void TacBoard::nextTurn()
 {
+    turnCount+=1;
 	if (Turn == PLAYER_O)
 	{
 		Turn = PLAYER_X;
@@ -249,4 +268,6 @@ void TacBoard::boardReset()
         }
     }
     winner = PLAYER_BLANK;
+    turnCount = 0;
+    firstMove();
 }
