@@ -6,6 +6,7 @@ using namespace std;
 TacBoard::TacBoard()
 {
     hasPrintedBefore = false;
+    winner = PLAYER_BLANK;
 }
 
 void TacBoard::printBoard()
@@ -30,6 +31,12 @@ void TacBoard::printBoard()
             }
             cout << BoardGUI.playerIDtoDisplayID[BoardGUI.board_status['A'][i]][tileCount];
             term.consoleColors.setBGTextColor(TerminalDisplay::consoleColors::BG_DEFAULT);
+            if (tileCount == 2 && BoardGUI.board_status['A'][i] == PLAYER_BLANK)
+            {
+                term.consoleCursorControls.moveCursorNColumns(-7);
+                cout << term.consoleFonts.beginDim() << "A " << i << term.consoleFonts.endDim();
+                term.consoleCursorControls.moveCursorNColumns(4);
+            }
             cout << "|";
             if (BoardGUI.win_board['B'][i] == PLAYER_WIN)
             {
@@ -37,6 +44,13 @@ void TacBoard::printBoard()
             }
             cout << BoardGUI.playerIDtoDisplayID[BoardGUI.board_status['B'][i]][tileCount];
             term.consoleColors.setBGTextColor(TerminalDisplay::consoleColors::BG_DEFAULT);
+            if (tileCount == 2 && BoardGUI.board_status['B'][i] == PLAYER_BLANK)
+            {
+                
+                term.consoleCursorControls.moveCursorNColumns(-7);
+                cout << term.consoleFonts.beginDim() << "B " << i << term.consoleFonts.endDim();
+                term.consoleCursorControls.moveCursorNColumns(4);
+            }
             cout << "|";
             if (BoardGUI.win_board['C'][i] == PLAYER_WIN)
             {
@@ -44,6 +58,13 @@ void TacBoard::printBoard()
             }
             cout << BoardGUI.playerIDtoDisplayID[BoardGUI.board_status['C'][i]][tileCount];
             term.consoleColors.setBGTextColor(TerminalDisplay::consoleColors::BG_DEFAULT);
+            if (tileCount == 2 && BoardGUI.board_status['C'][i] == PLAYER_BLANK)
+            {
+                
+                term.consoleCursorControls.moveCursorNColumns(-7);
+                cout << term.consoleFonts.beginDim() << "C " << i << term.consoleFonts.endDim();
+                term.consoleCursorControls.moveCursorNColumns(4);
+            }
             cout << endl;
         }
         if (i <= '2') // We only need to print this twice
@@ -54,38 +75,68 @@ void TacBoard::printBoard()
     cout << endl;
 }
 
+TacBoard::playerID TacBoard::whichPlayerWon()
+{
+    return winner;
+}
+
+string TacBoard::getPlayerTurn()
+{
+    switch (Turn)
+    {
+        case PLAYER_X:
+            {
+                return "Player X";
+            }
+        case PLAYER_O:
+            {
+                return "Player O";
+            }
+        default:
+            {
+                return "";
+            }
+    }
+   
+}
+
 /// @brief  Determines who won the game.
 /// @return PLAYER_BLANK for nobody, PLAYER_X, or PLAYER_Y
 TacBoard::playerID TacBoard::checkPlayerWin()
 {
+    if (winner != PLAYER_BLANK)
+    {
+        return winner;
+    }
+    
     for (char i = 'A'; i <= 'C'; i++)
     {
-        if ((BoardGUI.board_status[i]['1'] == BoardGUI.board_status[i]['2'] == BoardGUI.board_status[i]['3']) && BoardGUI.board_status[i]['2'] != PLAYER_BLANK )
+        if ((BoardGUI.board_status[i]['1'] == BoardGUI.board_status[i]['2'] && BoardGUI.board_status[i]['2'] == BoardGUI.board_status[i]['3']) && BoardGUI.board_status[i]['2'] != PLAYER_BLANK )
         {
             BoardGUI.win_board[i]['1'] = BoardGUI.win_board[i]['2'] = BoardGUI.win_board[i]['3'] = PLAYER_WIN;
-            return BoardGUI.board_status[i]['1'];
+            winner = BoardGUI.board_status[i]['1'];
         }
     }
     for (char i = '1'; i <= '3'; i++)
     {
-        if ((BoardGUI.board_status['A'][i] == BoardGUI.board_status['B'][i] == BoardGUI.board_status['C'][i]) && BoardGUI.board_status['B'][i] != PLAYER_BLANK)
+        if ((BoardGUI.board_status['A'][i] == BoardGUI.board_status['B'][i] && BoardGUI.board_status['B'][i]  == BoardGUI.board_status['C'][i]) && BoardGUI.board_status['B'][i] != PLAYER_BLANK)
         {
             BoardGUI.win_board['A'][i] = BoardGUI.win_board['B'][i] = BoardGUI.win_board['C'][i] = PLAYER_WIN;
-            return BoardGUI.board_status['A'][i];
+            winner = BoardGUI.board_status['A'][i];
         }
     }
 
-    if ((BoardGUI.board_status['A']['1'] == BoardGUI.board_status['B']['2'] == BoardGUI.board_status['C']['3']) && BoardGUI.board_status['B']['2'] != PLAYER_BLANK)
+    if ((BoardGUI.board_status['A']['1'] == BoardGUI.board_status['B']['2'] && BoardGUI.board_status['B']['2'] == BoardGUI.board_status['C']['3']) && BoardGUI.board_status['B']['2'] != PLAYER_BLANK)
     {
         BoardGUI.win_board['A']['1'] = BoardGUI.win_board['B']['2'] = BoardGUI.win_board['C']['3'] = PLAYER_WIN;
-        return BoardGUI.win_board['B']['2'];
+        winner = BoardGUI.win_board['B']['2'];
     } 
-    if ((BoardGUI.board_status['C']['1'] == BoardGUI.board_status['B']['2'] == BoardGUI.board_status['A']['3']) && BoardGUI.board_status['B']['2'] != PLAYER_BLANK)
+    if ((BoardGUI.board_status['C']['1'] == BoardGUI.board_status['B']['2'] && BoardGUI.board_status['B']['2'] == BoardGUI.board_status['A']['3']) && BoardGUI.board_status['B']['2'] != PLAYER_BLANK)
     {
         BoardGUI.win_board['C']['1'] = BoardGUI.win_board['B']['2'] = BoardGUI.win_board['A']['3'] = PLAYER_WIN;
-        return BoardGUI.win_board['B']['2'];
+        winner = BoardGUI.win_board['B']['2'];
     }
-    return PLAYER_BLANK;
+    return winner;
 }
 /// @brief Get the win type. (Unused currently)
 /// @return  The win type, like if a player won by a row.s
@@ -93,7 +144,7 @@ TacBoard::winType TacBoard::getWinType()
 {
     for (char i = 'A'; i <= 'C'; i++) //Col
     {
-        if ((BoardGUI.board_status[i]['1'] == BoardGUI.board_status[i]['2'] == BoardGUI.board_status[i]['3']) && BoardGUI.board_status[i]['2'] != PLAYER_BLANK )
+        if ((BoardGUI.board_status[i]['1'] == BoardGUI.board_status[i]['2'] && BoardGUI.board_status[i]['2'] == BoardGUI.board_status[i]['3']) && BoardGUI.board_status[i]['2'] != PLAYER_BLANK )
         {
             switch (i)
             {
@@ -108,7 +159,7 @@ TacBoard::winType TacBoard::getWinType()
     }
     for (char i = '1'; i <= '3'; i++) //Row
     {
-        if ((BoardGUI.board_status['A'][i] == BoardGUI.board_status['B'][i] == BoardGUI.board_status['C'][i]) && BoardGUI.board_status['B'][i] != PLAYER_BLANK)
+        if ((BoardGUI.board_status['A'][i] == BoardGUI.board_status['B'][i] && BoardGUI.board_status['B'][i]  == BoardGUI.board_status['C'][i]) && BoardGUI.board_status['B'][i] != PLAYER_BLANK)
         {
             switch (i)
             {
@@ -121,20 +172,25 @@ TacBoard::winType TacBoard::getWinType()
             };
         }
     }
-    if ((BoardGUI.board_status['A']['1'] == BoardGUI.board_status['B']['2'] == BoardGUI.board_status['C']['3']) && BoardGUI.board_status['B']['2'] != PLAYER_BLANK)
+    if ((BoardGUI.board_status['A']['1'] == BoardGUI.board_status['B']['2'] && BoardGUI.board_status['B']['2'] == BoardGUI.board_status['C']['3']) && BoardGUI.board_status['B']['2'] != PLAYER_BLANK)
     {
         return DIAG_LTR;
     } 
-    if ((BoardGUI.board_status['C']['1'] == BoardGUI.board_status['B']['2'] == BoardGUI.board_status['A']['3']) && BoardGUI.board_status['B']['2'] != PLAYER_BLANK)
+    if ((BoardGUI.board_status['C']['1'] == BoardGUI.board_status['B']['2'] && BoardGUI.board_status['B']['2'] == BoardGUI.board_status['A']['3']) && BoardGUI.board_status['B']['2'] != PLAYER_BLANK)
     {
         return DIAG_RTL;
     }
     return NONE;
 }
 
-TacBoard::playerID TacBoard::checkSpace(char Row, char Column)
+TacBoard::playerID TacBoard::checkSpace(char Column, char Row)
 {
-    return BoardGUI.board_status[Row][Column];
+    if (Column >= 'A' && Column <= 'C' && Row >= '1' && Row <= '3')
+    {
+        return BoardGUI.board_status[Column][Row];
+    }
+    return PLAYER_INVALID;
+    
 }
 // Returns what letter currently occupies a specific space on the board ( row x column )
 // Returns '\0' if the space is empty
@@ -143,20 +199,40 @@ void TacBoard::nextTurn()
 {
 	if (Turn == PLAYER_O)
 	{
-		Turn = PLAYER_O;
+		Turn = PLAYER_X;
         return;
 	}
 
-	Turn = PLAYER_X;
+	Turn = PLAYER_O;
 	return;
 }
 // Called after adding a space, switches to the next turn
 
-bool TacBoard::addSpace(char Row, char Column)
+bool TacBoard::addSpace(std::string input, bool &isGoodInput)
 {
-	if (checkSpace(Row, Column) != PLAYER_BLANK)
+    isGoodInput = true;
+    if (input.size() != 2)
+    {
+        isGoodInput = false;
+        return false;
+    }
+    char Column = input[0];
+    char Row = input[1];
+    if (Column >= 'a' && Column <= 'c')
+    {
+        Column -= 32;
+    }
+
+    if ((Column < 'A' || Column > 'C') || (Row < '1' || Row > '3'))
+    {
+        isGoodInput = false;
+        return false;
+    }
+
+    playerID ID = checkSpace(Column, Row);
+	if (ID == PLAYER_BLANK || ID == PLAYER_INVALID)
 	{
-		BoardGUI.board_status[Row][Column] = Turn;
+		BoardGUI.board_status[Column][Row] = Turn;
 		nextTurn();
         return true;
 	}
@@ -172,4 +248,5 @@ void TacBoard::boardReset()
             BoardGUI.board_status[col][row] = BoardGUI.win_board[col][row] = PLAYER_BLANK;
         }
     }
+    winner = PLAYER_BLANK;
 }

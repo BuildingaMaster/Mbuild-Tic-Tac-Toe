@@ -9,13 +9,15 @@ class TacBoard
 {
 private:
 	TerminalDisplay term;
+	bool hasPrintedBefore;
 public:
 	enum playerID
 	{
 		PLAYER_WIN = 2,
 		PLAYER_X = 1,
 		PLAYER_O = 0,
-		PLAYER_BLANK = -1
+		PLAYER_BLANK = -1,
+		PLAYER_INVALID = -2
 	};
 	enum winType
 	{
@@ -29,20 +31,23 @@ public:
 		DIAG_LTR,
 		DIAG_RTL
 	};
-
-	bool hasPrintedBefore;
+private:
+	playerID winner;
+public:
 	void printBoard();
+	playerID whichPlayerWon();
 	winType getWinType();
 	
 	playerID checkPlayerWin();
 
 	void boardReset();
 
-	bool addSpace(char, char);
+	bool addSpace(std::string, bool &);
 	playerID checkSpace(char, char);
 
 	playerID Turn = PLAYER_BLANK;
 	void nextTurn();
+	std::string getPlayerTurn();
 
 	class BoardGUI
 	{
