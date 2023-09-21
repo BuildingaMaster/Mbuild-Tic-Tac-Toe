@@ -332,7 +332,7 @@ void TerminalDisplay::consoleColors::setFGTextColor(ForegroundColors color)
     }
     std::string str(1,returnTerminalCode(ESC));
     str.append("["+returnForegroundColor(color)+"m");
-    cout << str;
+    cout << str << flush;
 }
 void TerminalDisplay::consoleColors::setBGTextColor(BackgroundColors color)
 {
@@ -342,7 +342,7 @@ void TerminalDisplay::consoleColors::setBGTextColor(BackgroundColors color)
     }
     std::string str(1,returnTerminalCode(ESC));
     str.append("["+returnBackgroundColor(color)+"m");
-    cout << str;
+    cout << str << flush;
 }
 void TerminalDisplay::consoleColors::setFGTextColor(int color)
 {
@@ -352,7 +352,7 @@ void TerminalDisplay::consoleColors::setFGTextColor(int color)
     }
     std::string str(1,returnTerminalCode(ESC));
     str.append("["+returnForegroundColor(FG_CUSTOM)+";5;"+to_string(color)+"m");
-    cout << str;
+    cout << str << flush;
 }
 void TerminalDisplay::consoleColors::setBGTextColor(int color)
 {
@@ -362,14 +362,14 @@ void TerminalDisplay::consoleColors::setBGTextColor(int color)
     }
     std::string str(1,returnTerminalCode(ESC));
     str.append("["+returnBackgroundColor(BG_CUSTOM)+";5;"+to_string(color)+"m");
-    cout << str;
+    cout << str << flush;
 }
 
 void TerminalDisplay::resetAllStyles()
 {
     std::string str(1,returnTerminalCode(ESC));
     str.append("[0m");
-    cout << str;
+    cout << str << flush;
 }
 
 std::string TerminalDisplay::returnScreenEraseMode(TerminalDisplay::screenEraseModes mode)
@@ -400,7 +400,7 @@ void TerminalDisplay::clearScreen(TerminalDisplay::screenEraseModes mode, bool m
     {
         str.append("\r");
     }
-    cout << str;
+    cout << str << flush;
 }
 
 TerminalDisplay::~TerminalDisplay()
