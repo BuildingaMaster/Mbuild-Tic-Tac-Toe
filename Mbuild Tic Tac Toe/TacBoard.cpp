@@ -26,9 +26,13 @@ void TacBoard::firstMove()
 }
 void TacBoard::printBoard()
 {
+    printBoard(false);
+}
+void TacBoard::printBoard(bool refresh = false)
+{
     // If this is the first time the board is printed:
     // Save where it is to overwrite it later.
-    if (hasPrintedBefore == false)
+    if (hasPrintedBefore == false || refresh == true)
     {
         term.saveCursorPos();
         hasPrintedBefore = true;
@@ -366,4 +370,16 @@ void TacBoard::displayScores()
         cout << "s";
     }
     cout << endl;
+}
+
+void TacBoard::gameDisplayInit(bool refresh)
+{
+    term.consoleCursorControls.moveToOrigin();
+    term.saveCursorPos();
+    term.clearScreen(TerminalDisplay::ERASE_ENTIRE_SCREEN, false);
+    term.restoreCursorPos();
+
+    cout << "[Master Builders Tic Tac Toe]" << endl;
+    displayScores();
+    printBoard(refresh);
 }
