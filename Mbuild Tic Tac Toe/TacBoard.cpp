@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cctype>
 #include "TacBoard.h"
 
 using namespace std;
@@ -94,24 +95,29 @@ TacBoard::playerID TacBoard::whichPlayerWon()
     return winner;
 }
 
-string TacBoard::getPlayerTurn()
+
+string TacBoard::getPlayerIDasString(TacBoard::playerID player)
 {
-    switch (Turn)
+    switch (player)
     {
         case PLAYER_X:
-            {
-                return "Player X";
-            }
+        {
+            return "Player X";
+        }
         case PLAYER_O:
-            {
-                return "Player O";
-            }
+        {
+            return "Player O";
+        }
         default:
-            {
-                return "";
-            }
+        {
+            return "";
+        }
     }
-   
+}
+
+string TacBoard::getPlayerTurn()
+{
+    return getPlayerIDasString(Turn);
 }
 
 /// @brief  Determines who won the game.
@@ -143,12 +149,12 @@ TacBoard::playerID TacBoard::checkPlayerWin()
     if ((BoardGUI.board_status['A']['1'] == BoardGUI.board_status['B']['2'] && BoardGUI.board_status['B']['2'] == BoardGUI.board_status['C']['3']) && BoardGUI.board_status['B']['2'] != PLAYER_BLANK)
     {
         BoardGUI.win_board['A']['1'] = BoardGUI.win_board['B']['2'] = BoardGUI.win_board['C']['3'] = PLAYER_WIN;
-        winner = BoardGUI.win_board['B']['2'];
+        winner = BoardGUI.board_status['B']['2'];
     } 
     if ((BoardGUI.board_status['C']['1'] == BoardGUI.board_status['B']['2'] && BoardGUI.board_status['B']['2'] == BoardGUI.board_status['A']['3']) && BoardGUI.board_status['B']['2'] != PLAYER_BLANK)
     {
         BoardGUI.win_board['C']['1'] = BoardGUI.win_board['B']['2'] = BoardGUI.win_board['A']['3'] = PLAYER_WIN;
-        winner = BoardGUI.win_board['B']['2'];
+        winner = BoardGUI.board_status['B']['2'];
     }
     if (turnCount >= 9 && winner == PLAYER_BLANK)
     {
@@ -269,24 +275,35 @@ void TacBoard::boardReset()
     }
     winner = PLAYER_BLANK;
     turnCount = 0;
+    hasPrintedBefore = false;
     firstMove();
 }
 
 //Game restarts
 void TacBoard::restartGame() 
 {
-    char choice;
-    cout << "Do you want to play another game? (Y/N)";
-    cin >> choice;
-    if (choice == 'y' || choice == 'Y')
+    string choice = "";
+    while (choice[0] != 'Y' && choice[0] != 'N')
+    {
+        cout << "Do you want to play another game? (Y/N) ";
+        getline(cin, choice);
+        if (choice[0] == 'y' || choice[0] == 'n')
+        {
+            choice[0] -= 32;
+        }
+        if (choice[0] != 'Y' && choice[0] != 'N')
+        {
+            term.consoleCursorControls.moveToLine(1,true);
+            term.clearScreen(TerminalDisplay::ERASE_ENTIRE_LINE,true);
+        }
+    }
+    
+    if (choice[0] == 'Y')
     {
         boardReset();
+        return;
     }
-    else
-    {
-        quitProgram();
-    }
-    cout << "The game has been restarted." << endl;
+    quitProgram();
 }
 
 
@@ -303,12 +320,50 @@ void TacBoard::trackWinner()
     term.clearScreen(TerminalDisplay::ERASE_ENTIRE_LINE, true);
     if (winner == PLAYER_X)
     {
+        cout << "Player X has " << player_x_wins << " win";
+        if (player_x_wins != 1)
+        {
+            cout << "s";
+        }
+        cout << "." << endl;
+    }
+    else if (winner == PLAYER_O)
+    {
+        cout << "Player O has " << player_o_wins << " win";
+        if (player_o_wins != 1)
+        {
+            cout << "s";
+        }
+        cout << "." << endl;
+    }
+}
+
+void TacBoard::addWinnerScore()
+{
+    if (winner == PLAYER_X)
+    {
         player_x_wins+= 1;
-        cout << "Player X has " << player_x_wins << " wins" << endl;
     }
     else if (winner == PLAYER_O)
     {
         player_o_wins+= 1;
-        cout << "Player O has " << player_o_wins << " wins" << endl;
     }
+}
+
+void TacBoard::displayScores()
+{
+    term.clearScreen(TerminalDisplay::ERASE_ENTIRE_LINE, true);
+    cout << "Player X: " << player_x_wins << " win";
+    if (player_x_wins != 1)
+    {
+        cout << "s";
+    }
+    cout << endl;
+    term.clearScreen(TerminalDisplay::ERASE_ENTIRE_LINE, true);
+    cout << "Player O: " << player_o_wins << " win";
+    if (player_o_wins != 1)
+    {
+        cout << "s";
+    }
+    cout << endl;
 }

@@ -51,6 +51,8 @@ public:
 	void quitProgram();
 
 	void trackWinner();
+	void addWinnerScore();
+	void displayScores();
 
 	bool addSpace(std::string, bool &);
 	playerID checkSpace(char, char);
@@ -58,6 +60,7 @@ public:
 	playerID Turn = PLAYER_BLANK;
 	void nextTurn();
 	std::string getPlayerTurn();
+	std::string getPlayerIDasString(playerID);
 
 	class BoardGUI
 	{
