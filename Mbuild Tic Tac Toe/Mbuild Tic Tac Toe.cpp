@@ -1,11 +1,16 @@
 // Mbuild Tic Tac Toe.cpp : This file contains the 'main' function. Program execution begins and ends there.
 
 
+#ifdef _WIN32
+// https://stackoverflow.com/questions/7035023/stdmax-expected-an-identifier
+#define NOMINMAX
+#include <Windows.h>
+#endif // _WIN32
+
 #include <iostream>
 #include <sstream> 
 #include <cctype>
 #include <limits>
-
 #include "TacBoard.h"
 #include "TerminalDisplay.h"
 
@@ -32,7 +37,60 @@ void printInstructions()
 
 int main()
 {
-    
+#ifdef _WIN32
+    // Set output mode to handle virtual terminal sequences,
+    // From https://learn.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut == INVALID_HANDLE_VALUE)
+    {
+        cout << "An error occurred, please try rerunning the app." << endl;
+        return false;
+    }
+    HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
+    if (hIn == INVALID_HANDLE_VALUE)
+    {
+        cout << "An error occurred, please try rerunning the app." << endl;
+        return false;
+    }
+
+    DWORD dwOriginalOutMode = 0;
+    DWORD dwOriginalInMode = 0;
+    if (!GetConsoleMode(hOut, &dwOriginalOutMode))
+    {
+        cout << "An error occurred, please try rerunning the app." << endl;
+        return false;
+    }
+    if (!GetConsoleMode(hIn, &dwOriginalInMode))
+    {
+        cout << "An error occurred, please try rerunning the app." << endl;
+        return false;
+    }
+
+    DWORD dwRequestedOutModes = ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
+    DWORD dwRequestedInModes = ENABLE_VIRTUAL_TERMINAL_INPUT;
+
+    DWORD dwOutMode = dwOriginalOutMode | dwRequestedOutModes;
+    if (!SetConsoleMode(hOut, dwOutMode))
+    {
+        // we failed to set both modes, try to step down mode gracefully.
+        dwRequestedOutModes = ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        dwOutMode = dwOriginalOutMode | dwRequestedOutModes;
+        if (!SetConsoleMode(hOut, dwOutMode))
+        {
+            // Failed to set any VT mode, can't do anything here.
+            cout << "An error occurred, please try rerunning the app." << endl;
+            return -1;
+        }
+    }
+
+    DWORD dwInMode = dwOriginalInMode | dwRequestedInModes;
+    if (!SetConsoleMode(hIn, dwInMode))
+    {
+        // Failed to set VT input mode, can't do anything here.
+        cout << "An error occurred, please try rerunning the app." << endl;
+        return -1;
+    }
+#endif
     srand(time(NULL)); // creating to make a "real" random first move
     TerminalDisplay term;
     TacBoard TicTacToe;
