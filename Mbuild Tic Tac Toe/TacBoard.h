@@ -39,11 +39,12 @@ private:
 public:
 	void firstMove();
 	void printBoard();
+	void printBoard(bool);
 	playerID whichPlayerWon();
 	winType getWinType();
 	
 	playerID checkPlayerWin();
-
+	void gameDisplayInit(bool);
 	void boardReset();
 
 	void restartGame();

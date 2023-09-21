@@ -2,6 +2,7 @@
 
 
 #include <iostream>
+#include <sstream> 
 #include <cctype>
 #include <limits>
 
@@ -12,6 +13,7 @@ using namespace std;
 
 void printInstructions()
 {
+    stringbuf pp;
 	cout << "Welcome to Tic Tac Toe! " << endl << endl;
 	cout << "How To Play: " << endl;
 	cout << "Tic Tac Toe is a game played on a 3 x 3 board." << endl;
@@ -23,7 +25,8 @@ void printInstructions()
 	cout << "If a player enters an invalid spot / a spot already taken on the board, that player will be asked to re-enter their move to an available spot on the board." << endl;
 	cout << "The objective of the game is to get 3 'X's or 3 'O's in a row either horizontally, vertically, or diagonally." << endl;
 	cout << "If the board is filled and there is no sequence of 3 'X's or 3 'O's in a row as stated above, the game ends in a tie." << endl;
-    cout << "Enter 'q' to quit at any time. " << endl << endl;
+    cout << "Enter 'q' to quit at any time. " << endl;
+    cout << "If the board looks corrupted, expand the window and enter 'r' to resize." << endl << endl;
     cout << "Press Enter to continue:" << endl;
 }
 
@@ -50,14 +53,7 @@ int main()
 
     while (playAgain) 
     {
-        term.consoleCursorControls.moveToOrigin();
-        term.saveCursorPos();
-        term.clearScreen(TerminalDisplay::ERASE_ENTIRE_SCREEN, false);
-        term.restoreCursorPos();
-
-        cout << "[Master Builders Tic Tac Toe]" << endl;
-        TicTacToe.displayScores();
-        TicTacToe.printBoard();
+        TicTacToe.gameDisplayInit(false);
         while (TicTacToe.whichPlayerWon() == TacBoard::PLAYER_BLANK)
         {
             cout << term.consoleFonts.beginBold() << "It's " << TicTacToe.getPlayerTurn() << "'s turn!" << term.consoleFonts.endBold() << endl;
@@ -68,9 +64,14 @@ int main()
             {
                 cout << "Enter a position: ";
                 getline(cin, pos);
-                if (pos == "q")
+                if (pos == "q" || pos == "Q")
                 {
                     TicTacToe.quitProgram();
+                }
+                else if (pos == "r" || pos == "R")
+                {
+                    TicTacToe.gameDisplayInit(true);
+                    cout << term.consoleFonts.beginBold() << "It's " << TicTacToe.getPlayerTurn() << "'s turn!" << term.consoleFonts.endBold() << endl;
                 }
                 else
                 {
